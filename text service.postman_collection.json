@@ -1,0 +1,444 @@
+{
+	"info": {
+		"_postman_id": "1b8bcfd0-bc9a-4f11-82ef-bdffe4997027",
+		"name": "text service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33508303"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"abdo\",\r\n    \"email\":\"abdo@gmail.com\",\r\n    \"password\":\"123456\",\r\n    \"passwordConfirm\":\"123456\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"abdo@gmail.com\",\r\n    \"password\":\"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}auth/login",
+							"host": [
+								"{{url}}auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzliNGEzM2ZhNzY2MWYzZmIxMjM5OGMiLCJpYXQiOjE3MzgyNDkyOTgsImV4cCI6MTc0NjAyNTI5OH0.4FFq-v8aw5EuevNJIljcU4LsOn310-JLkvXAnb2nHv0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"abdo@gmail.com\",\r\n    \"password\":\"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}auth/logout",
+							"host": [
+								"{{url}}auth"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forget password",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzliNGEzM2ZhNzY2MWYzZmIxMjM5OGMiLCJpYXQiOjE3MzgyNDkyOTgsImV4cCI6MTc0NjAyNTI5OH0.4FFq-v8aw5EuevNJIljcU4LsOn310-JLkvXAnb2nHv0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"abdo@gmail.com\",\r\n    \"password\":\"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}auth/logout",
+							"host": [
+								"{{url}}auth"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset password",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzliNGEzM2ZhNzY2MWYzZmIxMjM5OGMiLCJpYXQiOjE3MzgyNDkyOTgsImV4cCI6MTc0NjAyNTI5OH0.4FFq-v8aw5EuevNJIljcU4LsOn310-JLkvXAnb2nHv0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"abdo@gmail.com\",\r\n    \"password\":\"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}auth/logout",
+							"host": [
+								"{{url}}auth"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "add quota",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzlhMjg3NTk5MWY5YWYxOTkyY2VkZTgiLCJpYXQiOjE3MzkwMTAwNDksImV4cCI6MTc0Njc4NjA0OX0.Eb4kaZ4tO1x_TIELqCTAnVPar5VS45aWW7BIJmLeI3E",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\":11,\r\n    \"expiresAt\":\"2/10/2025\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}user/add-quota/679b4a33fa7661f3fb12398c",
+							"host": [
+								"{{url}}user"
+							],
+							"path": [
+								"add-quota",
+								"679b4a33fa7661f3fb12398c"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "genrate-key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzliNGEzM2ZhNzY2MWYzZmIxMjM5OGMiLCJpYXQiOjE3MzgyNDkyOTgsImV4cCI6MTc0NjAyNTI5OH0.4FFq-v8aw5EuevNJIljcU4LsOn310-JLkvXAnb2nHv0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}user/generate-key",
+							"host": [
+								"{{url}}user"
+							],
+							"path": [
+								"generate-key"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUserKeys",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzliNGEzM2ZhNzY2MWYzZmIxMjM5OGMiLCJpYXQiOjE3MzgyNDkyOTgsImV4cCI6MTc0NjAyNTI5OH0.4FFq-v8aw5EuevNJIljcU4LsOn310-JLkvXAnb2nHv0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}user/generate-key",
+							"host": [
+								"{{url}}user"
+							],
+							"path": [
+								"generate-key"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user activities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzliNGEzM2ZhNzY2MWYzZmIxMjM5OGMiLCJpYXQiOjE3MzgyNDkyOTgsImV4cCI6MTc0NjAyNTI5OH0.4FFq-v8aw5EuevNJIljcU4LsOn310-JLkvXAnb2nHv0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}user/getUserActivities?page=2&limit=15",
+							"host": [
+								"{{url}}user"
+							],
+							"path": [
+								"getUserActivities"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "limit",
+									"value": "15"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change Key Activation State",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzliNGEzM2ZhNzY2MWYzZmIxMjM5OGMiLCJpYXQiOjE3MzgyNDkyOTgsImV4cCI6MTc0NjAyNTI5OH0.4FFq-v8aw5EuevNJIljcU4LsOn310-JLkvXAnb2nHv0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}user/changeKeyActivationState/679b9524a1497b47f6e3e8b2",
+							"host": [
+								"{{url}}user"
+							],
+							"path": [
+								"changeKeyActivationState",
+								"679b9524a1497b47f6e3e8b2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change Key limit State",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzliNGEzM2ZhNzY2MWYzZmIxMjM5OGMiLCJpYXQiOjE3MzgyNDkyOTgsImV4cCI6MTc0NjAyNTI5OH0.4FFq-v8aw5EuevNJIljcU4LsOn310-JLkvXAnb2nHv0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}user/changeKeyLimitState/679b9524a1497b47f6e3e8b2",
+							"host": [
+								"{{url}}user"
+							],
+							"path": [
+								"changeKeyLimitState",
+								"679b9524a1497b47f6e3e8b2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "set key limit",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzliNGEzM2ZhNzY2MWYzZmIxMjM5OGMiLCJpYXQiOjE3MzgyNDkyOTgsImV4cCI6MTc0NjAyNTI5OH0.4FFq-v8aw5EuevNJIljcU4LsOn310-JLkvXAnb2nHv0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quotaLimit\":5\r\n   \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}user/setKeyLimit/679b9524a1497b47f6e3e8b2",
+							"host": [
+								"{{url}}user"
+							],
+							"path": [
+								"setKeyLimit",
+								"679b9524a1497b47f6e3e8b2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "useService",
+			"item": [
+				{
+					"name": "send message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"apiKey\":\"0aan8a7xjkhm6jgvkdm\",\r\n    \"phoneNumber\":\"01222835787\",\r\n    \"message\":\"helooooo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}messaging/send-message",
+							"host": [
+								"{{url}}messaging"
+							],
+							"path": [
+								"send-message"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "start sessstion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"apiKey\":\"0aan8a7xjkhm6jgvkdm\",\r\n    \"phoneNumber\":\"01222835787\",\r\n    \"message\":\"helooooo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}messaging/send-message",
+							"host": [
+								"{{url}}messaging"
+							],
+							"path": [
+								"send-message"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:8000/api/v1/",
+			"type": "default"
+		}
+	]
+}

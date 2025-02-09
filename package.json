@@ -22,6 +22,9 @@
     "nodemon": "^3.1.9",
     "path": "^0.12.7",
     "puppeteer": "^24.1.1",
-    "slugify": "^1.6.6"
+    "qrcode": "^1.5.4",
+    "slugify": "^1.6.6",
+    "whatsapp-web.js": "^1.26.0",
+    "wwebjs-mongo": "^1.1.0"
   }
 }

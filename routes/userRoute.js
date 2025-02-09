@@ -19,7 +19,7 @@ const {
 
 const router = express.Router();
 
-router.route('/add-quota/:id').post(protect,allowedTo('admin'),addQuota);
+router.route('/add-quota/:id').post(protect,allowedTo("admin"),addQuota);
 router.route('/genrate-key').get(protect,generateKey);
 router.route('/getUserKeys').get(protect,getUserKeys);
 

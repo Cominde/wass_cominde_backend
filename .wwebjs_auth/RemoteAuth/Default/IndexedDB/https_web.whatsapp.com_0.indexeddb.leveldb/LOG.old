@@ -1,0 +1,56 @@
+2025/02/09-20:35:00.989 6bc Reusing MANIFEST D:\Tutorials\nodejs_projects\texting-service-backend\.wwebjs_auth\RemoteAuth\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/02/09-20:35:00.990 6bc Recovering log #33
+2025/02/09-20:35:01.725 6bc Reusing old log D:\Tutorials\nodejs_projects\texting-service-backend\.wwebjs_auth\RemoteAuth\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000033.log 
+2025/02/09-20:35:01.725 6bc Delete type=2 #32
+2025/02/09-20:35:01.988 1734 Level-0 table #38: started
+2025/02/09-20:35:02.020 1734 Level-0 table #38: 1072542 bytes OK
+2025/02/09-20:35:02.021 1734 Delete type=0 #33
+2025/02/09-20:35:02.196 14cc Level-0 table #40: started
+2025/02/09-20:35:02.250 14cc Level-0 table #40: 7182 bytes OK
+2025/02/09-20:35:02.274 14cc Delete type=0 #37
+2025/02/09-20:35:02.274 14cc Manual compaction at level-0 from '\x00\x15\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x16\x00\x00\x00' @ 0 : 0; will stop at '\x00\x17\x00\x00\x05' @ 61070 : 1
+2025/02/09-20:35:02.274 14cc Compacting 1@0 + 1@1 files
+2025/02/09-20:35:02.407 14cc Generated table #41@0: 32810 keys, 628931 bytes
+2025/02/09-20:35:02.407 14cc Compacted 1@0 + 1@1 files => 628931 bytes
+2025/02/09-20:35:02.408 14cc compacted to: files[ 0 1 1 0 0 0 0 ]
+2025/02/09-20:35:02.408 14cc Delete type=2 #40
+2025/02/09-20:35:02.408 14cc Manual compaction at level-0 from '\x00\x17\x00\x00\x05' @ 61070 : 1 .. '\x00\x16\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/02/09-20:35:02.410 14cc Level-0 table #43: started
+2025/02/09-20:35:02.412 14cc Level-0 table #43: 251 bytes OK
+2025/02/09-20:35:02.413 14cc Delete type=2 #38
+2025/02/09-20:35:02.414 14cc Delete type=0 #39
+2025/02/09-20:35:02.414 14cc Manual compaction at level-0 from '\x00\x16\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x17\x00\x00\x00' @ 0 : 0; will stop at '\x00\x16\x00\x00\x05' @ 61111 : 0
+2025/02/09-20:35:02.414 14cc Compacting 1@0 + 1@1 files
+2025/02/09-20:35:02.500 14cc Generated table #44@0: 32808 keys, 629161 bytes
+2025/02/09-20:35:02.500 14cc Compacted 1@0 + 1@1 files => 629161 bytes
+2025/02/09-20:35:02.501 14cc compacted to: files[ 0 1 1 0 0 0 0 ]
+2025/02/09-20:35:02.501 14cc Delete type=2 #43
+2025/02/09-20:35:02.502 14cc Manual compaction at level-0 from '\x00\x16\x00\x00\x05' @ 61111 : 0 .. '\x00\x17\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/02/09-20:35:02.502 6bc Level-0 table #46: started
+2025/02/09-20:35:02.505 6bc Level-0 table #46: 249 bytes OK
+2025/02/09-20:35:02.506 6bc Delete type=2 #41
+2025/02/09-20:35:02.506 6bc Delete type=0 #42
+2025/02/09-20:35:02.506 6bc Manual compaction at level-0 from '\x00\x17\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x18\x00\x00\x00' @ 0 : 0; will stop at '\x00\x17\x00\x00\x05' @ 61117 : 0
+2025/02/09-20:35:02.507 6bc Compacting 1@0 + 1@1 files
+2025/02/09-20:35:02.613 6bc Generated table #47@0: 32806 keys, 628951 bytes
+2025/02/09-20:35:02.613 6bc Compacted 1@0 + 1@1 files => 628951 bytes
+2025/02/09-20:35:02.616 6bc compacted to: files[ 0 1 1 0 0 0 0 ]
+2025/02/09-20:35:02.616 6bc Delete type=2 #46
+2025/02/09-20:35:02.617 6bc Manual compaction at level-0 from '\x00\x17\x00\x00\x05' @ 61117 : 0 .. '\x00\x18\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/02/09-20:35:05.456 6bc Compacting 1@1 + 1@2 files
+2025/02/09-20:35:05.497 6bc Generated table #48@1: 13107 keys, 470014 bytes
+2025/02/09-20:35:05.497 6bc Compacted 1@1 + 1@2 files => 470014 bytes
+2025/02/09-20:35:05.515 6bc compacted to: files[ 0 0 1 0 0 0 0 ]
+2025/02/09-20:35:05.516 6bc Delete type=2 #44
+2025/02/09-20:40:05.607 1734 Level-0 table #50: started
+2025/02/09-20:40:05.613 1734 Level-0 table #50: 152922 bytes OK
+2025/02/09-20:40:05.614 1734 Delete type=2 #35
+2025/02/09-20:40:05.614 1734 Delete type=0 #45
+2025/02/09-20:40:05.614 1734 Delete type=2 #47
+2025/02/09-20:40:05.615 1734 Manual compaction at level-0 from '\x00\x1a\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x1b\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/02/09-20:40:10.162 1734 Compacting 1@1 + 1@2 files
+2025/02/09-20:40:10.188 1734 Generated table #51@1: 14555 keys, 523968 bytes
+2025/02/09-20:40:10.188 1734 Compacted 1@1 + 1@2 files => 523968 bytes
+2025/02/09-20:40:10.189 1734 compacted to: files[ 0 0 1 0 0 0 0 ]
+2025/02/09-20:40:10.189 1734 Delete type=2 #48
+2025/02/09-20:40:10.190 1734 Delete type=2 #50

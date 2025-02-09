@@ -1,4 +1,3 @@
-const puppeteer = require("puppeteer");
 const multer = require("multer");
 
 const fs = require("fs");
@@ -9,113 +8,200 @@ const User = require("../models/userModel");
 const Key = require("../models/keyModel");
 const ApiError = require("../utils/apiError");
 
+const mongoose = require("mongoose");
+const { Client, RemoteAuth, MessageMedia } = require("whatsapp-web.js");
+const { MongoStore } = require("wwebjs-mongo");
+const QRCode = require("qrcode");
+const { dbConnection } = require("../config/database"); // Assuming you have a file named dbConnection.js that exports mongooseConnection
+let store;
+let client;
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
-    cb(null, file.fieldname + "-" + Date.now() + ext);
+    cb(null, file.fieldname + "_" + formatDateForFile(new Date()) + ext);
   },
 });
 
-let browser, page;
+const upload = multer({ storage: storage });
 
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-async function initializeBrowser() {
+(async () => {
   try {
-    browser = await puppeteer.launch({
-      headless: true, // Set to false to run in non-headless mode
-      // slowMo: 100, // Slow down by 100ms to make actions more visible
-      // devtools: true, // Open DevTools automatically
-      // args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    await dbConnection;
+    console.log(formatDate(new Date()) + ": DATABASE CONNECTED");
+    store = new MongoStore({ mongoose: mongoose });
+
+    client = await new Client({
+      clientId: "main",
+      authStrategy: new RemoteAuth({
+        store: store,
+        backupSyncIntervalMs: 300000,
+      }),
+      puppeteer: {
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      },
     });
-    page = await browser.newPage();
-    await page.setUserAgent(
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.88 Safari/537.36"
-    );
+    console.log("done");
   } catch (error) {
-    console.error("Failed to initialize browser:", error);
-    if (browser) await browser.close();
-    throw error;
+    console.error("Database connection failed:", error);
   }
+})();
+
+function dateComponentPad(value) {
+  var format = String(value);
+
+  return format.length < 2 ? "0" + format : format;
 }
 
+function formatDate(date) {
+  var datePart = [date.getFullYear(), date.getMonth() + 1, date.getDate()].map(
+    dateComponentPad
+  );
+  var timePart = [date.getHours(), date.getMinutes()].map(dateComponentPad);
+
+  return datePart.join("-") + " " + timePart.join(":");
+}
+
+function formatDateForFile(date) {
+  var datePart = [date.getFullYear(), date.getMonth() + 1, date.getDate()].map(
+    dateComponentPad
+  );
+  var timePart = [date.getHours(), date.getMinutes()].map(dateComponentPad);
+
+  return datePart.join("-") + "_" + timePart.join("-");
+}
+
+// async function sendTextEmail(text) {
+mailOptions = function (text) {
+  return {
+    from: "cominde.tech@gmail.com",
+    to: ["joeshwoa.george@gmail.com", "abdelrahmanl2004@gmail.com"],
+    subject: "WhatsApp Session State",
+    text: `${text}`,
+  };
+};
+
+//     await transporter.sendMail(mailOptions);
+// }
 const qrCodePath = path.join(__dirname, "qr_code.png");
 
-exports.startSession = async (_, res, next) => {
-  try {
-    // Initialize browser if not already running
+exports.startSession = async (req, res) => {
 
-    await initializeBrowser();
-
-    console.log("Browser initialized");
-
-    // Navigate to WhatsApp Web
-
+  newSession = false;
+  client.on("qr", async (qr) => {
     try {
-      await page.goto("https://web.whatsapp.com", {
-        waitUntil: "networkidle0",
-        timeout: 60000, // Increase timeout to 60 seconds
-      });
+      newSession = true;
+      const qrCodePath = path.join(__dirname, "qr_code.png");
+      await QRCode.toFile(qrCodePath, qr);
+      console.log(qrCodePath);
+      await sendEmailWithQRCode(qrCodePath);
+      // sendEmail(
+      //   mailOptions(
+      //     formatDate(new Date()) +
+      //       ": Please scan the QR code to start a WhatsApp session."
+      //   )
+      // );
+      console.log(formatDate(new Date()) + ": QR CODE SENT");
     } catch (error) {
-      console.error("Failed to navigate to WhatsApp Web:", error);
-      throw error;
+      console.error(
+        formatDate(new Date()) + ": Failed to send QR code:",
+        error
+      );
     }
+  });
 
-    console.log("WhatsApp Web loaded");
-    await delay(5000); // Reduced initial delay
-
-    // Take QR code screenshot and send email
-    await page.screenshot({
-      path: qrCodePath,
-      // Capture only QR code area
-    });
-
-    await sendEmailWithQRCode(qrCodePath).catch((error) =>
-      console.error("Failed to send email:", error)
-    );
-
-    console.log("QR code generated and sent. Waiting for scan...");
-
-    // Wait for successful login
-    await page.waitForSelector('div[role="grid"]', { timeout: 10 * 60000 }); // Wait up to 10 minutes
-
-    // Cleanup QR code image
-    fs.unlink(qrCodePath, (err) => {
-      if (err) console.error("Error deleting QR code:", err);
-    });
-
-    console.log("WhatsApp Web login successful");
-    return res.status(200).json({
-      status: "success",
-      message: "WhatsApp Web login successful",
-    });
-  } catch (error) {
-    console.error("Session start failed:", error.message);
-
-    // Cleanup on error
-    if (browser) await browser.close();
-    browser = null;
-    page = null;
-
-    // Different error responses based on error type
-    if (error.name === "TimeoutError") {
-      return res.status(408).json({
-        status: "error",
-        message: "QR code scan timeout - please try again",
-      });
+  client.on("authenticated", async () => {
+    try {
+      sendEmail(
+        mailOptions(
+          formatDate(new Date()) + ": WhatsApp session is authenticated."
+        )
+      );
+      console.log(formatDate(new Date()) + ": AUTHENTICATION SUCCESS");
+    } catch (error) {
+      console.error(
+        formatDate(new Date()) + ": Failed to send authentication email:",
+        error
+      );
     }
+  });
 
-    next(error);
-  }
+  client.on("ready", () => {
+    try {
+      sendEmail(
+        mailOptions(formatDate(new Date()) + ": WhatsApp session is ready.")
+      );
+      console.log(formatDate(new Date()) + ": SESSION READY");
+      if (!newSession) {
+        res.status(200).json({ status: "Saved session started successfully" });
+      }
+    } catch (error) {
+      console.error(
+        formatDate(new Date()) + ": Failed to send ready email:",
+        error
+      );
+    }
+  });
+
+  client.on("auth_failure", (msg) => {
+    try {
+      sendEmail(
+        mailOptions(
+          formatDate(new Date()) + ": WhatsApp session authentication failed."
+        )
+      );
+      console.error(formatDate(new Date()) + ": AUTHENTICATION FAILURE", msg);
+    } catch (error) {
+      console.error(
+        formatDate(new Date()) +
+          ": Failed to send authentication failure email:",
+        error
+      );
+    }
+  });
+
+  client.on("disconnected", (reason) => {
+    try {
+      sendEmail(
+        mailOptions(formatDate(new Date()) + ": WhatsApp session disconnected.")
+      );
+      console.log(formatDate(new Date()) + ": SESSION DISCONNECTED", reason);
+    } catch (error) {
+      console.error(
+        formatDate(new Date()) + ": Failed to send disconnection email:",
+        error
+      );
+    }
+  });
+
+  client.on("remote_session_saved", () => {
+    try {
+      sendEmail(
+        mailOptions(formatDate(new Date()) + ": WhatsApp session saved.")
+      );
+      console.log(formatDate(new Date()) + ": SESSION SAVED");
+      if (newSession) {
+        res
+          .status(200)
+          .json({ status: "Session started and saved successfully" });
+      }
+    } catch (error) {
+      console.error(
+        formatDate(new Date()) + ": Failed to send session saved email:",
+        error
+      );
+    }
+  });
+
+  await client.initialize();
 };
+
 exports.sendWhatsappMessage = async (req, res, next) => {
   try {
-    if (!browser || !page) {
+    if (!client.info) {
       return res
         .status(400)
         .json({ status: "No active session. Please start a session first." });
@@ -125,6 +211,12 @@ exports.sendWhatsappMessage = async (req, res, next) => {
     const { contact, message, apiKey } = req.body;
     if (!contact || !message) {
       throw new ApiError("contact number and message required");
+    }
+
+    // Validate contact number format
+    const contactRegex = /^\d+$/;
+    if (!contactRegex.test(contact)) {
+      throw new ApiError("Invalid contact number format");
     }
     if (!apiKey) {
       throw new ApiError("API key required");
@@ -197,40 +289,31 @@ exports.sendWhatsappMessage = async (req, res, next) => {
       throw new ApiError(error.message);
     }
 
-    await page.goto("https://web.whatsapp.com");
+    // Send message
+
+    const filePath = req.file ? req.file.path : null;
 
     try {
-      await page.waitForSelector('div[role="grid"]', { timeout: 10000 });
+      console.log (contact)
+      const chatId = `${contact}@c.us`;
+      if (req.file) {
+        const media = MessageMedia.fromFilePath(filePath);
+        await client.sendMessage(chatId, media, { caption: message });
+      } else {
+        await client.sendMessage(chatId, message);
+      }
+      console.log(formatDate(new Date()) + `: MESSAGE SENT TO ${contact}`);
     } catch (error) {
-      console.error(error);
-      await browser.close();
-      return res.status(401).json({ status: "Start new session" });
-    }
-
-    try {
-      await page.goto(`https://web.whatsapp.com/send?phone=${contact}`, {
-        waitUntil: "networkidle2",
-      });
-      await page.screenshot({
-        path: qrCodePath,
-        // Capture only QR code area
-      });
-      await page.waitForSelector('div[contenteditable="true"][data-tab="1"]', {
-        timeout: 100000,
-      });
-      const messageBox = await page.$(
-        'div[contenteditable="true"][data-tab="1"]'
+      console.error(
+        formatDate(new Date()) + `: MESSAGE FIELD SENT TO ${contact}:`,
+        error
       );
-      await messageBox.focus();
-      await page.type('div[contenteditable="true"][data-tab="1"]', message);
-      await page.keyboard.press("Enter");
-      await delay(1000);
-    } catch (error) {
-      return next(error);
     }
-
-    console.log("Messages sent successfully");
+    if (filePath) {
+      fs.unlinkSync(filePath);
+    }
     res.json({ status: "Messages sent successfully" });
+
   } catch (error) {
     console.error("Failed to send WhatsApp message:", error);
     next(error);

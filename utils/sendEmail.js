@@ -1,16 +1,21 @@
 const nodemailer = require("nodemailer");
 const path = require("path");
 const dotenv = require("dotenv");
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
   service: "gmail", // true for 465, false for other ports
   auth: {
-    user: process.env.NODEMAILER_EMAIL, // Your email address
-    pass: process.env.NODEMAILER_PASS, // Your email app password
+    // user: process.env.NODEMAILER_EMAIL, // Your email address
+    // pass: process.env.NODEMAILER_PASS,
+    user: "cominde.tech@gmail.com" , // Your email address
+    pass: "obuw gfkt qnwn gttv",
+    // Your email app password
   },
   tls: {
     rejectUnauthorized: false,
   },
+ 
 });
 const sendEmail = async (options) => {
   // Create a transporter
@@ -41,11 +46,11 @@ const sendEmailWithQRCode = async (qrCodePath) => {
     subject: "WhatsApp QR Code",
     text: "Please scan the attached QR code to log in.",
     attachments: [
-      {
-        filename: path.basename(qrCodePath),
-        path: qrCodePath,
-      },
-    ],
+                  {
+                      filename: path.basename(qrCodePath),
+                      path: qrCodePath,
+                  },
+              ],
   };
 
   await transporter.sendMail(mailOptions);
