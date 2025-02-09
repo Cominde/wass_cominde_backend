@@ -1,4 +1,0 @@
-2025/02/09-20:51:43.198 39c8 Reusing MANIFEST D:\Tutorials\nodejs_projects\texting-service-backend\.wwebjs_auth\RemoteAuth\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2025/02/09-20:51:43.199 39c8 Recovering log #49
-2025/02/09-20:51:43.208 39c8 Reusing old log D:\Tutorials\nodejs_projects\texting-service-backend\.wwebjs_auth\RemoteAuth\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000049.log 
-2025/02/09-20:51:44.348 1f44 Manual compaction at level-0 from '\x00\x1b\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x1c\x00\x00\x00' @ 0 : 0; will stop at (end)

@@ -1,4 +1,11 @@
-2025/02/09-20:51:43.198 39c8 Reusing MANIFEST D:\Tutorials\nodejs_projects\texting-service-backend\.wwebjs_auth\RemoteAuth\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2025/02/09-20:51:43.199 39c8 Recovering log #49
-2025/02/09-20:51:43.208 39c8 Reusing old log D:\Tutorials\nodejs_projects\texting-service-backend\.wwebjs_auth\RemoteAuth\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000049.log 
-2025/02/09-20:51:44.348 1f44 Manual compaction at level-0 from '\x00\x1b\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x1c\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/02/10-00:10:06.694 4cf4 Reusing MANIFEST D:\Tutorials\nodejs_projects\texting-service-backend\.wwebjs_auth\RemoteAuth\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/02/10-00:10:06.694 4cf4 Recovering log #84
+2025/02/10-00:10:06.706 4cf4 Reusing old log D:\Tutorials\nodejs_projects\texting-service-backend\.wwebjs_auth\RemoteAuth\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000084.log 
+2025/02/10-00:10:07.816 4764 Level-0 table #90: started
+2025/02/10-00:10:07.820 4764 Level-0 table #90: 74899 bytes OK
+2025/02/10-00:10:07.822 4764 Delete type=0 #84
+2025/02/10-00:10:07.823 4764 Manual compaction at level-0 from '\x004\x00\x00\x00' @ 72057594037927935 : 1 .. '\x005\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/02/10-00:10:09.893 4764 Compacting 1@1 + 1@2 files
+2025/02/10-00:10:09.929 4764 Generated table #91@1: 15216 keys, 540582 bytes
+2025/02/10-00:10:09.929 4764 Compacted 1@1 + 1@2 files => 540582 bytes
+2025/02/10-00:10:09.930 4764 compacted to: files[ 0 0 1 0 0 0 0 ]

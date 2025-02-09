@@ -88,115 +88,85 @@ mailOptions = function (text) {
 // }
 const qrCodePath = path.join(__dirname, "qr_code.png");
 
-exports.startSession = async (req, res) => {
+exports.startSession = async (req, res, next) => {
+  try {
+    let newSession = false;
 
-  newSession = false;
-  client.on("qr", async (qr) => {
-    try {
-      newSession = true;
-      const qrCodePath = path.join(__dirname, "qr_code.png");
-      await QRCode.toFile(qrCodePath, qr);
-      console.log(qrCodePath);
-      await sendEmailWithQRCode(qrCodePath);
-      // sendEmail(
-      //   mailOptions(
-      //     formatDate(new Date()) +
-      //       ": Please scan the QR code to start a WhatsApp session."
-      //   )
-      // );
-      console.log(formatDate(new Date()) + ": QR CODE SENT");
-    } catch (error) {
-      console.error(
-        formatDate(new Date()) + ": Failed to send QR code:",
-        error
-      );
-    }
-  });
-
-  client.on("authenticated", async () => {
-    try {
-      sendEmail(
-        mailOptions(
-          formatDate(new Date()) + ": WhatsApp session is authenticated."
-        )
-      );
-      console.log(formatDate(new Date()) + ": AUTHENTICATION SUCCESS");
-    } catch (error) {
-      console.error(
-        formatDate(new Date()) + ": Failed to send authentication email:",
-        error
-      );
-    }
-  });
-
-  client.on("ready", () => {
-    try {
-      sendEmail(
-        mailOptions(formatDate(new Date()) + ": WhatsApp session is ready.")
-      );
-      console.log(formatDate(new Date()) + ": SESSION READY");
-      if (!newSession) {
-        res.status(200).json({ status: "Saved session started successfully" });
+    client.on("qr", async (qr) => {
+      try {
+        newSession = true;
+        const qrCodePath = path.join(__dirname, "qr_code.png");
+        await QRCode.toFile(qrCodePath, qr);
+        console.log(qrCodePath);
+        await sendEmailWithQRCode(qrCodePath);
+        console.log(formatDate(new Date()) + ": QR CODE SENT");
+      } catch (error) {
+        console.error(formatDate(new Date()) + ": Failed to send QR code:", error);
+        next(new ApiError("Failed to send QR code"));
       }
-    } catch (error) {
-      console.error(
-        formatDate(new Date()) + ": Failed to send ready email:",
-        error
-      );
-    }
-  });
+    });
 
-  client.on("auth_failure", (msg) => {
-    try {
-      sendEmail(
-        mailOptions(
-          formatDate(new Date()) + ": WhatsApp session authentication failed."
-        )
-      );
-      console.error(formatDate(new Date()) + ": AUTHENTICATION FAILURE", msg);
-    } catch (error) {
-      console.error(
-        formatDate(new Date()) +
-          ": Failed to send authentication failure email:",
-        error
-      );
-    }
-  });
-
-  client.on("disconnected", (reason) => {
-    try {
-      sendEmail(
-        mailOptions(formatDate(new Date()) + ": WhatsApp session disconnected.")
-      );
-      console.log(formatDate(new Date()) + ": SESSION DISCONNECTED", reason);
-    } catch (error) {
-      console.error(
-        formatDate(new Date()) + ": Failed to send disconnection email:",
-        error
-      );
-    }
-  });
-
-  client.on("remote_session_saved", () => {
-    try {
-      sendEmail(
-        mailOptions(formatDate(new Date()) + ": WhatsApp session saved.")
-      );
-      console.log(formatDate(new Date()) + ": SESSION SAVED");
-      if (newSession) {
-        res
-          .status(200)
-          .json({ status: "Session started and saved successfully" });
+    client.on("authenticated", async () => {
+      try {
+        await sendEmail(mailOptions(formatDate(new Date()) + ": WhatsApp session is authenticated."));
+        console.log(formatDate(new Date()) + ": AUTHENTICATION SUCCESS");
+      } catch (error) {
+        console.error(formatDate(new Date()) + ": Failed to send authentication email:", error);
+        next(new ApiError("Failed to send authentication email"));
       }
-    } catch (error) {
-      console.error(
-        formatDate(new Date()) + ": Failed to send session saved email:",
-        error
-      );
-    }
-  });
+    });
 
-  await client.initialize();
+    client.on("ready", () => {
+      try {
+        sendEmail(mailOptions(formatDate(new Date()) + ": WhatsApp session is ready."));
+        console.log(formatDate(new Date()) + ": SESSION READY");
+        if (!newSession) {
+          res.status(200).json({ status: "Saved session started successfully" });
+        }
+      } catch (error) {
+        console.error(formatDate(new Date()) + ": Failed to send ready email:", error);
+        next(new ApiError("Failed to send ready email"));
+      }
+    });
+
+    client.on("auth_failure", (msg) => {
+      try {
+        sendEmail(mailOptions(formatDate(new Date()) + ": WhatsApp session authentication failed."));
+        console.error(formatDate(new Date()) + ": AUTHENTICATION FAILURE", msg);
+      } catch (error) {
+        console.error(formatDate(new Date()) + ": Failed to send authentication failure email:", error);
+        next(new ApiError("Failed to send authentication failure email"));
+      }
+    });
+
+    client.on("disconnected", (reason) => {
+      try {
+        sendEmail(mailOptions(formatDate(new Date()) + ": WhatsApp session disconnected."));
+        console.log(formatDate(new Date()) + ": SESSION DISCONNECTED", reason);
+      } catch (error) {
+        console.error(formatDate(new Date()) + ": Failed to send disconnection email:", error);
+        next(new ApiError("Failed to send disconnection email"));
+      }
+    });
+
+    client.on("remote_session_saved", () => {
+      try {
+        sendEmail(mailOptions(formatDate(new Date()) + ": WhatsApp session saved."));
+        console.log(formatDate(new Date()) + ": SESSION SAVED");
+        if (newSession) {
+          res.status(200).json({ status: "Session started and saved successfully" });
+        }
+      } catch (error) {
+        console.error(formatDate(new Date()) + ": Failed to send session saved email:", error);
+        next(new ApiError("Failed to send session saved email"));
+      }
+    });
+
+    await client.initialize();
+  } catch (error) {
+    console.error("Failed to start WhatsApp session:", error);
+    next(new ApiError("Failed to start WhatsApp session"));
+  }
 };
 
 exports.sendWhatsappMessage = async (req, res, next) => {
