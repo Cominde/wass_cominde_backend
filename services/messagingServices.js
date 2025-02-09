@@ -95,10 +95,10 @@ exports.startSession = async (req, res, next) => {
     client.on("qr", async (qr) => {
       try {
         newSession = true;
-        const qrCodePath = path.join(__dirname, "qr_code.png");
-        await QRCode.toFile(qrCodePath, qr);
-        console.log(qrCodePath);
-        await sendEmailWithQRCode(qrCodePath);
+        // const qrCodePath = path.join(__dirname, "qr_code.png");
+        // await QRCode.toFile(qrCodePath, qr);
+        // console.log(qrCodePath);
+        // await sendEmailWithQRCode(qrCodePath);
         console.log(formatDate(new Date()) + ": QR CODE SENT");
       } catch (error) {
         console.error(formatDate(new Date()) + ": Failed to send QR code:", error);
