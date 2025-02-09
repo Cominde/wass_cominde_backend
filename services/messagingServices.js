@@ -32,7 +32,7 @@ const upload = multer({ storage: storage });
   try {
     await dbConnection;
     console.log(formatDate(new Date()) + ": DATABASE CONNECTED");
-    store = new MongoStore({ mongoose: mongoose });
+    store = await MongoStore.init({ mongoose: mongoose });
 
     client = await new Client({
       clientId: "main",
