@@ -28,28 +28,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-(async () => {
-  try {
-    await dbConnection;
-    console.log(formatDate(new Date()) + ": DATABASE CONNECTED");
-    store = new MongoStore({ mongoose: mongoose, path: "/tmp/" });
-
-    client = await new Client({
-      clientId: "main",
-      authStrategy: new RemoteAuth({
-        store: store,
-        backupSyncIntervalMs: 300000,
-      }),
-      puppeteer: {
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      },
-    });
-    console.log("done");
-  } catch (error) {
-    console.error("Database connection failed:", error);
-  }
-})();
-
 function dateComponentPad(value) {
   var format = String(value);
 
@@ -89,6 +67,25 @@ mailOptions = function (text) {
 const qrCodePath = path.join(__dirname, "qr_code.png");
 
 exports.startSession = async (req, res, next) => {
+  try {
+    await dbConnection;
+    console.log(formatDate(new Date()) + ": DATABASE CONNECTED");
+    store = new MongoStore({ mongoose: mongoose, path: "/tmp/" });
+
+    client = await new Client({
+      clientId: "main",
+      authStrategy: new RemoteAuth({
+        store: store,
+        backupSyncIntervalMs: 300000,
+      }),
+      puppeteer: {
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      },
+    });
+    console.log("done");
+  } catch (error) {
+    console.error("Database connection failed:", error);
+  }
   try {
     let newSession = false;
 
