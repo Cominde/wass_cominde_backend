@@ -18,7 +18,7 @@ let client;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+    cb(null, "tmp/uploads/");
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
@@ -39,6 +39,7 @@ await (async () => {
       authStrategy: new RemoteAuth({
         store: store,
         backupSyncIntervalMs: 300000,
+        dataPath: 'tmp/'
       }),
       puppeteer: {
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
