@@ -28,7 +28,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-(async () => {
+await (async () => {
   try {
     await dbConnection;
     console.log(formatDate(new Date()) + ": DATABASE CONNECTED");
