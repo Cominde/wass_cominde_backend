@@ -8,6 +8,7 @@ class MongoStore {
     }
 
     async sessionExists(options) {
+        console.log(`database connected :${this.mongoose.connection.host}`)
         let multiDeviceCollection = this.mongoose.connection.db.collection(`whatsapp-${options.session}.files`);
         let hasExistingSession = await multiDeviceCollection.countDocuments();
         return !!hasExistingSession;   
