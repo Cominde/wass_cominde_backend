@@ -7,9 +7,9 @@ const { MongoStore } = require('wwebjs-mongo');
 const fs = require('fs');
 const path = require('path');
 const QRCode = require('qrcode');
-const { dbConnection } = require('./config/database'); // Assuming you have a file named dbConnection.js that exports mongooseConnection
+
+const mongoUrl = 'mongodb+srv://joeshwoageorge:J0eshwoa@jodb.0fzmbui.mongodb.net/wassCominde';
 const app = express();
-const {sendEmailWithQRCode,sendEmail}=require("./utils/sendEmail")
 let store;
 let client
 
@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-dbConnection.then(() => {
+mongoose.connect(mongoUrl).then(() => {
     console.log(formatDate(new Date())+': DATABASE CONNECTED');
     store = new MongoStore({ mongoose: mongoose });
 
@@ -41,13 +41,13 @@ dbConnection.then(() => {
     });
 });
 
-// const transporter = nodemailer.createTransport({
-//     service: 'gmail',
-//     auth: {
-//         user: 'cominde.tech@gmail.com',
-//         pass: 'obuw gfkt qnwn gttv',
-//     },
-// });
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'cominde.tech@gmail.com',
+        pass: 'obuw gfkt qnwn gttv',
+    },
+});
 
 function dateComponentPad(value) {
     var format = String(value);
@@ -69,33 +69,33 @@ function formatDateForFile(date) {
     return datePart.join('-') + '_' + timePart.join('-');
 }
 
-// async function sendEmailWithQRCode(qrCodePath) {
-//     const mailOptions = {
-//         from: 'cominde.tech@gmail.com',
-//         to: 'joeshwoa.george@gmail.com',
-//         subject: 'WhatsApp QR Code',
-//         text: 'Please scan the attached QR code to log in.',
-//         attachments: [
-//             {
-//                 filename: path.basename(qrCodePath),
-//                 path: qrCodePath,
-//             },
-//         ],
-//     };
+async function sendEmailWithQRCode(qrCodePath) {
+    const mailOptions = {
+        from: 'cominde.tech@gmail.com',
+        to: 'joeshwoa.george@gmail.com',
+        subject: 'WhatsApp QR Code',
+        text: 'Please scan the attached QR code to log in.',
+        attachments: [
+            {
+                filename: path.basename(qrCodePath),
+                path: qrCodePath,
+            },
+        ],
+    };
 
-//     await transporter.sendMail(mailOptions);
-// }
+    await transporter.sendMail(mailOptions);
+}
 
-// async function sendTextEmail(text) {
-//     const mailOptions = {
-//         from: 'cominde.tech@gmail.com',
-//         to: 'joeshwoa.george@gmail.com',
-//         subject: 'WhatsApp Session State',
-//         text: text,
-//     };
+async function sendTextEmail(text) {
+    const mailOptions = {
+        from: 'cominde.tech@gmail.com',
+        to: 'joeshwoa.george@gmail.com',
+        subject: 'WhatsApp Session State',
+        text: text,
+    };
 
-//     await transporter.sendMail(mailOptions);
-// }
+    await transporter.sendMail(mailOptions);
+}
 
 app.post('/start_session', async (req, res) => {
     newSession = false;
@@ -104,17 +104,17 @@ app.post('/start_session', async (req, res) => {
         const qrCodePath = path.join(__dirname, 'qr_code.png');
         await QRCode.toFile(qrCodePath, qr);
         await sendEmailWithQRCode(qrCodePath);
-        sendEmail(formatDate(new Date())+': Please scan the QR code to start a WhatsApp session.');
+        sendTextEmail(formatDate(new Date())+': Please scan the QR code to start a WhatsApp session.');
         console.log(formatDate(new Date())+': QR CODE SENT');
     });
 
     client.on('authenticated', async () => {
-        sendEmail(formatDate(new Date())+': WhatsApp session is authenticated.');
+        sendTextEmail(formatDate(new Date())+': WhatsApp session is authenticated.');
         console.log(formatDate(new Date())+': AUTHENTICATION SUCCESS');
     });
 
     client.on('ready', () => {
-        sendEmail(formatDate(new Date())+': WhatsApp session is ready.');
+        sendTextEmail(formatDate(new Date())+': WhatsApp session is ready.');
         console.log(formatDate(new Date())+': SESSION READY');
         if(!newSession) {
             res.status(200).json({ status: 'Saved session started successfully' });
@@ -122,17 +122,17 @@ app.post('/start_session', async (req, res) => {
     });
 
     client.on('auth_failure', msg => {
-        sendEmail(formatDate(new Date())+': WhatsApp session authentication failed.');
+        sendTextEmail(formatDate(new Date())+': WhatsApp session authentication failed.');
         console.error(formatDate(new Date())+': AUTHENTICATION FAILURE', msg);
     });
 
     client.on('disconnected', (reason) => {
-        sendEmail(formatDate(new Date())+': WhatsApp session disconnected.');
+        sendTextEmail(formatDate(new Date())+': WhatsApp session disconnected.');
         console.log(formatDate(new Date())+': SESSION DISCONNECTED', reason);
     });
 
     client.on('remote_session_saved', () => {
-        sendEmail(formatDate(new Date())+': WhatsApp session saved.');
+        sendTextEmail(formatDate(new Date())+': WhatsApp session saved.');
         console.log(formatDate(new Date())+': SESSION SAVED');
         if(newSession) {
             res.status(200).json({ status: 'Session started and saved successfully' });
@@ -169,3 +169,6 @@ app.post('/send_message', upload.single('file'), async (req, res) => {
     res.json({ status: 'Messages sent successfully' });
 });
 
+app.listen(5000, () => {
+    console.log(formatDate(new Date())+': SERVER STARTED ON PORT 5000');
+});

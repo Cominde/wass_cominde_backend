@@ -34,7 +34,7 @@ const upload = multer({ storage: storage });
     console.log(formatDate(new Date()) + ": DATABASE CONNECTED");
     store = new MongoStore({ mongoose: mongoose });
 
-    client =  new Client({
+    client = await new Client({
       clientId: "main",
       authStrategy: new RemoteAuth({
         store: store,

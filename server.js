@@ -4,6 +4,7 @@ const globalError = require("./middlewares/errorMiddleware");
 const mountRoutes=require("./routes/index");
 require("dotenv").config();
 const dotenv = require("dotenv");
+
 dotenv.config({ path: "config.env" });
 const dbConnection = require("./config/database");
 

@@ -1,11 +1,13 @@
-2025/02/10-00:10:06.694 4cf4 Reusing MANIFEST D:\Tutorials\nodejs_projects\texting-service-backend\.wwebjs_auth\RemoteAuth\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2025/02/10-00:10:06.694 4cf4 Recovering log #84
-2025/02/10-00:10:06.706 4cf4 Reusing old log D:\Tutorials\nodejs_projects\texting-service-backend\.wwebjs_auth\RemoteAuth\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000084.log 
-2025/02/10-00:10:07.816 4764 Level-0 table #90: started
-2025/02/10-00:10:07.820 4764 Level-0 table #90: 74899 bytes OK
-2025/02/10-00:10:07.822 4764 Delete type=0 #84
-2025/02/10-00:10:07.823 4764 Manual compaction at level-0 from '\x004\x00\x00\x00' @ 72057594037927935 : 1 .. '\x005\x00\x00\x00' @ 0 : 0; will stop at (end)
-2025/02/10-00:10:09.893 4764 Compacting 1@1 + 1@2 files
-2025/02/10-00:10:09.929 4764 Generated table #91@1: 15216 keys, 540582 bytes
-2025/02/10-00:10:09.929 4764 Compacted 1@1 + 1@2 files => 540582 bytes
-2025/02/10-00:10:09.930 4764 compacted to: files[ 0 0 1 0 0 0 0 ]
+2025/02/10-13:56:03.888 844c Reusing MANIFEST D:\Tutorials\nodejs_projects\texting-service-backend\.wwebjs_auth\RemoteAuth\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/02/10-13:56:03.888 844c Recovering log #89
+2025/02/10-13:56:03.956 844c Reusing old log D:\Tutorials\nodejs_projects\texting-service-backend\.wwebjs_auth\RemoteAuth\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000089.log 
+2025/02/10-13:56:05.245 695c Level-0 table #94: started
+2025/02/10-13:56:05.254 695c Level-0 table #94: 159097 bytes OK
+2025/02/10-13:56:05.255 695c Delete type=0 #89
+2025/02/10-13:56:05.256 8710 Manual compaction at level-0 from '\x005\x00\x00\x00' @ 72057594037927935 : 1 .. '\x006\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/02/10-13:56:09.200 7748 Compacting 1@1 + 1@2 files
+2025/02/10-13:56:09.309 7748 Generated table #95@1: 16678 keys, 596653 bytes
+2025/02/10-13:56:09.309 7748 Compacted 1@1 + 1@2 files => 596653 bytes
+2025/02/10-13:56:09.311 7748 compacted to: files[ 0 0 1 0 0 0 0 ]
+2025/02/10-13:56:09.311 7748 Delete type=2 #91
+2025/02/10-13:56:09.311 7748 Delete type=2 #94
