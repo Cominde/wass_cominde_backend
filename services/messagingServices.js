@@ -44,6 +44,7 @@ const upload = multer({ storage: storage });
       puppeteer: {
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       },
+      dataPath: '/tmp/',
     });
     console.log("done");
   } catch (error) {
