@@ -32,9 +32,9 @@ const upload = multer({ storage: storage });
   try {
     await dbConnection;
     console.log(formatDate(new Date()) + ": DATABASE CONNECTED");
-    store = await MongoStore.init({ mongoose: mongoose });
+    store = new MongoStore({ mongoose: mongoose });
 
-    client = await new Client({
+    client =  new Client({
       clientId: "main",
       authStrategy: new RemoteAuth({
         store: store,
@@ -95,10 +95,10 @@ exports.startSession = async (req, res, next) => {
     client.on("qr", async (qr) => {
       try {
         newSession = true;
-        // const qrCodePath = path.join(__dirname, "qr_code.png");
-        // await QRCode.toFile(qrCodePath, qr);
-        // console.log(qrCodePath);
-        // await sendEmailWithQRCode(qrCodePath);
+        const qrCodePath = path.join(__dirname, "qr_code.png");
+        await QRCode.toFile(qrCodePath, qr);
+        console.log(qrCodePath);
+        await sendEmailWithQRCode(qrCodePath);
         console.log(formatDate(new Date()) + ": QR CODE SENT");
       } catch (error) {
         console.error(formatDate(new Date()) + ": Failed to send QR code:", error);
@@ -165,7 +165,7 @@ exports.startSession = async (req, res, next) => {
     await client.initialize();
   } catch (error) {
     console.error("Failed to start WhatsApp session:", error);
-    next(new ApiError("Failed to start WhatsApp session"));
+    next(new ApiError(error.message));
   }
 };
 
