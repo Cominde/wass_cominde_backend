@@ -70,6 +70,7 @@ exports.startSession = async (req, res, next) => {
   try {
     mongoose.connect(process.env.MONGO_URL).then(() => {
       console.log(formatDate(new Date())+': DATABASE CONNECTED');
+      console.log(`database connected :${mongoose.connection.db}`)
       store = new MongoStore({ mongoose: mongoose });
     
       client = new Client({
@@ -83,7 +84,7 @@ exports.startSession = async (req, res, next) => {
           }
       });
     });
-    
+
     let newSession = false;
 
     client.on("qr", async (qr) => {
