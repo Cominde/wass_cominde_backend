@@ -34,15 +34,15 @@ const upload = multer({ storage: storage });
     console.log(formatDate(new Date()) + ": DATABASE CONNECTED");
     store = new MongoStore({ mongoose: mongoose });
 
-    client = await new Client({
-      clientId: "main",
+    client = new Client({
       authStrategy: new RemoteAuth({
-        store: store,
-        backupSyncIntervalMs: 300000,
-        dataPath: 'tmp/'
+      clientId: "main",
+      store: store,
+      backupSyncIntervalMs: 300000,
+      dataPath: path.join(__dirname, "..", "tmp") // Change the directory here
       }),
       puppeteer: {
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
       },
     });
     console.log("done");
@@ -96,7 +96,7 @@ exports.startSession = async (req, res, next) => {
     client.on("qr", async (qr) => {
       try {
         newSession = true;
-        const qrCodePath = path.join(__dirname, "qr_code.png");
+        const qrCodePath = path.join(__dirname,"..","/tmp", "qr_code.png");
         await QRCode.toFile(qrCodePath, qr);
         console.log(qrCodePath);
         await sendEmailWithQRCode(qrCodePath);
