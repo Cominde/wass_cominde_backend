@@ -16,22 +16,6 @@ const { dbConnection } = require("../config/database"); // Assuming you have a f
 let store;
 let client;
 
-mongoose.connect(process.env.MONGO_URL).then(() => {
-  console.log(formatDate(new Date())+': DATABASE CONNECTED');
-  store = new MongoStore({ mongoose: mongoose });
-
-  client = new Client({
-      clientId: 'main',
-      authStrategy: new RemoteAuth({
-          store: store,
-          backupSyncIntervalMs: 300000
-      }),
-      puppeteer: {
-          args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      }
-  });
-});
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "/tmp/uploads/");
@@ -80,16 +64,32 @@ mailOptions = function (text) {
 
 //     await transporter.sendMail(mailOptions);
 // }
-const qrCodePath = path.join(__dirname, "qr_code.png");
+const qrCodePath = path.join(__dirname, "tmp/qr_code.png");
 
 exports.startSession = async (req, res, next) => {
   try {
+    mongoose.connect(process.env.MONGO_URL).then(() => {
+      console.log(formatDate(new Date())+': DATABASE CONNECTED');
+      store = new MongoStore({ mongoose: mongoose });
+    
+      client = new Client({
+          clientId: 'main',
+          authStrategy: new RemoteAuth({
+              store: store,
+              backupSyncIntervalMs: 300000
+          }),
+          puppeteer: {
+              args: ['--no-sandbox', '--disable-setuid-sandbox'],
+          }
+      });
+    });
+    
     let newSession = false;
 
     client.on("qr", async (qr) => {
       try {
         newSession = true;
-        const qrCodePath = path.join(__dirname, "qr_code.png");
+        const qrCodePath = path.join(__dirname, "tmp/qr_code.png");
         await QRCode.toFile(qrCodePath, qr);
         console.log(qrCodePath);
         await sendEmailWithQRCode(qrCodePath);
