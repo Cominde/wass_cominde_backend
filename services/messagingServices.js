@@ -68,10 +68,7 @@ const qrCodePath = path.join(__dirname, "tmp/qr_code.png");
 
 exports.startSession = async (req, res, next) => {
   try {
-    mongoose.connect(process.env.MONGO_URL).then(() => {
-      console.log(formatDate(new Date())+': DATABASE CONNECTED');
-      console.log(`database connected :${mongoose.connection.db}`)
-      store = new MongoStore({ mongoose: mongoose });
+    store = new MongoStore({ mongoose: mongoose });
     
       client = new Client({
           clientId: 'main',
@@ -83,7 +80,6 @@ exports.startSession = async (req, res, next) => {
               args: ['--no-sandbox', '--disable-setuid-sandbox'],
           }
       });
-    });
 
     let newSession = false;
 
