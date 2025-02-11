@@ -6,11 +6,12 @@ require("dotenv").config();
 const dotenv = require("dotenv");
 
 dotenv.config({ path: "config.env" });
-const dbConnection = require("./config/database");
+const mongoose =require ('mongoose');
 
-dbConnection();
+mongoose.connect(process.env.DB_URI).then((conn)=>{
+  console.log(`database connected :${conn.connection.host}`)
 
-const app = express();
+  const app = express();
 app.use(express.json());
 mountRoutes(app);
 
@@ -43,3 +44,10 @@ process.on("unhandledRejection", (err) => {
     process.exit(1);
   });
 });
+  
+  }).catch((error)=>{
+      console.error(`database error: ${error}`);
+      process.exit(1);
+  });
+
+
