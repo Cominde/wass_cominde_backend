@@ -9,7 +9,7 @@ const Key = require("../models/keyModel");
 const ApiError = require("../utils/apiError");
 
 const mongoose = require("mongoose");
-const { Client, RemoteAuth, MessageMedia } = require("whatsapp-web.js");
+const { Client, RemoteAuth, MessageMedia} = require("whatsapp-web.js");
 const { MongoStore } = require("../mongo-store-edited");
 const QRCode = require("qrcode");
 const { dbConnection } = require("../config/database"); // Assuming you have a file named dbConnection.js that exports mongooseConnection
@@ -74,7 +74,8 @@ exports.startSession = async (req, res, next) => {
           clientId: 'main',
           authStrategy: new RemoteAuth({
               store: store,
-              backupSyncIntervalMs: 300000
+              backupSyncIntervalMs: 300000,
+              dataPath: '/tmp/'
           }),
           puppeteer: {
               args: ['--no-sandbox', '--disable-setuid-sandbox'],
