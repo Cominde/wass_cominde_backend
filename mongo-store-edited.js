@@ -22,7 +22,7 @@ class MongoStore {
         });
         await new Promise((resolve, reject) => {
             fs.createReadStream(path.join(this.path, `${options.session}.zip`))
-                .pipe(bucket.openUploadStream(`${options.session}.zip`))
+                .pipe(bucket.openUploadStream(path.join(this.path, `${options.session}.zip`)))
                 .on('error', err => reject(err))
                 .on('close', () => resolve());
         });
