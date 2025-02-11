@@ -9,8 +9,8 @@ const Key = require("../models/keyModel");
 const ApiError = require("../utils/apiError");
 
 const mongoose = require("mongoose");
-const { Client, RemoteAuth, MessageMedia } = require("whatsapp-web.js");
-const { MongoStore } = require("wwebjs-mongo");
+const { Client, RemoteAuth, MessageMedia} = require("whatsapp-web.js");
+const { MongoStore } = require("../mongo-store-edited");
 const QRCode = require("qrcode");
 const { dbConnection } = require("../config/database"); // Assuming you have a file named dbConnection.js that exports mongooseConnection
 let store;
@@ -18,7 +18,7 @@ let client;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "tmp/uploads/");
+    cb(null, "/tmp/uploads/");
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
@@ -27,29 +27,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
-(async () => {
-  try {
-    await dbConnection;
-    console.log(formatDate(new Date()) + ": DATABASE CONNECTED");
-    store = new MongoStore({ mongoose: mongoose });
-
-    client = new Client({
-      authStrategy: new RemoteAuth({
-      clientId: "main",
-      store: store,
-      backupSyncIntervalMs: 300000,
-      dataPath: path.join(__dirname, "..", "tmp") // Change the directory here
-      }),
-      puppeteer: {
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      },
-    });
-    console.log("done");
-  } catch (error) {
-    console.error("Database connection failed:", error);
-  }
-})();
 
 function dateComponentPad(value) {
   var format = String(value);
@@ -87,16 +64,30 @@ mailOptions = function (text) {
 
 //     await transporter.sendMail(mailOptions);
 // }
-const qrCodePath = path.join(__dirname, "qr_code.png");
+const qrCodePath = path.join(__dirname, "tmp/qr_code.png");
 
 exports.startSession = async (req, res, next) => {
   try {
+    store = new MongoStore({ mongoose: mongoose });
+    
+      client = new Client({
+          clientId: 'main',
+          authStrategy: new RemoteAuth({
+              store: store,
+              backupSyncIntervalMs: 300000,
+              dataPath: '/tmp/'
+          }),
+          puppeteer: {
+              args: ['--no-sandbox', '--disable-setuid-sandbox'],
+          }
+      });
+
     let newSession = false;
 
     client.on("qr", async (qr) => {
       try {
         newSession = true;
-        const qrCodePath = path.join(__dirname,"..","/tmp", "qr_code.png");
+        const qrCodePath = path.join(__dirname, "tmp/qr_code.png");
         await QRCode.toFile(qrCodePath, qr);
         console.log(qrCodePath);
         await sendEmailWithQRCode(qrCodePath);
