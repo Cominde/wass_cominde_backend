@@ -12,7 +12,6 @@ const mongoose = require("mongoose");
 const { Client, RemoteAuth, MessageMedia } = require("whatsapp-web.js");
 const { MongoStore } = require("../mongo-store-edited");
 const QRCode = require("qrcode");
-const mongoose =require ('mongoose');
 const { dbConnection } = require("../config/database"); // Assuming you have a file named dbConnection.js that exports mongooseConnection
 let store;
 let client;
