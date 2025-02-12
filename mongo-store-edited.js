@@ -10,13 +10,16 @@ class MongoStore {
     }
 
     async sessionExists(options) {
-        console.log(`database connected :${this.mongoose.connection.db}`);
+        console.log(`strart sessionExists`);
         let multiDeviceCollection = this.mongoose.connection.db.collection(`whatsapp-${options.session}.files`);
+        console.log(multiDeviceCollection);
         let hasExistingSession = await multiDeviceCollection.countDocuments();
+        console.log(`end sessionExists`);
         return !!hasExistingSession;
     }
 
     async save(options) {
+        console.log(`strart save`);
         const filePath = path.join(this.path, `${options.session}.zip`);
         const bucket = new this.mongoose.mongo.GridFSBucket(this.mongoose.connection.db, {
             bucketName: `whatsapp-${options.session}`
@@ -24,23 +27,29 @@ class MongoStore {
 
         await new Promise((resolve, reject) => {
             fs.createReadStream(filePath)
-                .pipe(bucket.openUploadStream(`./tmp/${options.session}.zip`)) // Use only the filename
+                .pipe(bucket.openUploadStream(`${options.session}.zip`)) // Use only the filename
                 .on('error', err => reject(err))
                 .on('close', () => resolve());
         });
 
         options.bucket = bucket;
         await this.#deletePrevious(options);
+        console.log(`end save`);
     }
 
     async extract(options) {
-        const filePath = path.join(this.path, options.path);
+        console.log(`strart extract`);
+        // const filePath = path.join(this.path, options.path);
+        const fileName = `${options.session}.zip`;
+        const filePath = `/tmp/${fileName}`;
         const bucket = new this.mongoose.mongo.GridFSBucket(this.mongoose.connection.db, {
             bucketName: `whatsapp-${options.session}`
         });
+        console.log(`end extract`);
 
         return new Promise((resolve, reject) => {
-            bucket.openDownloadStreamByName(`${options.session}.zip`) // Use only the filename
+            console.log(process.cwd())
+            bucket.openDownloadStreamByName(fileName)
                 .pipe(fs.createWriteStream(filePath))
                 .on('error', err => reject(err))
                 .on('close', () => resolve());
@@ -48,6 +57,7 @@ class MongoStore {
     }
 
     async delete(options) {
+        console.log(`strart delete`);
         const bucket = new this.mongoose.mongo.GridFSBucket(this.mongoose.connection.db, {
             bucketName: `whatsapp-${options.session}`
         });
@@ -56,15 +66,20 @@ class MongoStore {
             filename: `${options.session}.zip` // Use only the filename
         }).toArray();
 
+        console.log(`end delete`);
+
         documents.map(async doc => {
             return bucket.delete(doc._id);
         });
     }
 
     async #deletePrevious(options) {
+        console.log(`strart deletePrevious`);
         const documents = await options.bucket.find({
             filename: `${options.session}.zip` // Use only the filename
         }).toArray();
+
+        console.log(`end deletePrevious`);
 
         if (documents.length > 1) {
             const oldSession = documents.reduce((a, b) => a.uploadDate < b.uploadDate ? a : b);

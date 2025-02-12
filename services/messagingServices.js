@@ -75,7 +75,7 @@ exports.startSession = async (req, res, next) => {
           authStrategy: new RemoteAuth({
               store: store,
               backupSyncIntervalMs: 300000,
-              dataPath: '/tmp/'
+              dataPath: './tmp/'
           }),
           puppeteer: {
               args: ['--no-sandbox', '--disable-setuid-sandbox'],
