@@ -10,7 +10,7 @@ const ApiError = require("../utils/apiError");
 
 const mongoose = require("mongoose");
 const { Client, RemoteAuth, MessageMedia} = require("whatsapp-web.js");
-const { MongoStore } = require("../mongo-store-edited");
+const { MongoStore } = require("../tmp/mongo-store-edited");//require('wwebjs-mongo');//
 const QRCode = require("qrcode");
 const { dbConnection } = require("../config/database"); // Assuming you have a file named dbConnection.js that exports mongooseConnection
 let store;
